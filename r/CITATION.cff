@@ -8,7 +8,7 @@ authors:
     affiliation: "University of Agriculture in Kraków, Poland"
     email: igor.pawelec@urk.edu.pl
     orcid: "https://orcid.org/0009-0005-9798-3596"
-repository-code: "https://github.com/igorpawelec/rgeopalette"
+repository-code: "https://github.com/igorpawelec/geopalette"
 license: GPL-3.0-or-later
 version: "0.2.0"
 date-released: "2026-08-24"
@@ -69,7 +69,7 @@ references:
     authors:
       - family-names: Pawelec
         given-names: Igor
-    url: "https://github.com/igorpawelec/pygeopalette"
+    url: "https://github.com/igorpawelec/geopalette/tree/main/python"
     notes: >-
       Agreement is measured rather than exact: pygeopalette stores intermediates
       in single precision where R has only double, so the two agree to better

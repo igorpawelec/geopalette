@@ -44,9 +44,9 @@ validate = ["colour-science>=0.4", "scikit-image>=0.19"]
 pygeopalette = "pygeopalette.__main__:main"
 
 [project.urls]
-Homepage = "https://github.com/igorpawelec/pygeopalette"
-Repository = "https://github.com/igorpawelec/pygeopalette"
-Issues = "https://github.com/igorpawelec/pygeopalette/issues"
+Homepage = "https://github.com/igorpawelec/geopalette"
+Repository = "https://github.com/igorpawelec/geopalette"
+Issues = "https://github.com/igorpawelec/geopalette/issues"
 
 [tool.setuptools.packages.find]
 # Explicit, so setuptools never guesses from the flat layout: www/,

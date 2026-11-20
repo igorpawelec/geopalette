@@ -5,8 +5,8 @@ Contributions are welcome! Here's how to get started.
 ## Development setup
 
 ```bash
-git clone https://github.com/igorpawelec/pygeopalette.git
-cd pygeopalette
+git clone https://github.com/igorpawelec/geopalette.git
+cd geopalette/python
 conda env create -f environment.yaml
 conda activate pygeopalette
 pip install -e .
@@ -73,13 +73,11 @@ change was meant to do. The matrix is the part that disagrees.
    `gh run list` is nicer if the GitHub CLI is installed; it is not
    everywhere, and the curl form needs nothing but a public repo.
 6. Only then tag and push the tag:
-   `git tag -a vX.Y.Z -m "..." && git push --tags`
-7. If this release changes what the package produces, bump the pin in
-   [rgeopalette](https://github.com/igorpawelec/rgeopalette)'s
-   `.github/workflows/R-CMD-check.yaml`, which installs `pygeopalette` from a tag.
-   Leaving it stale does not break anything visibly — the R twin goes on
-   proving its agreement against the previous release, which is exactly the
-   kind of quiet staleness this checklist exists to prevent.
+   `git tag -a python-vX.Y.Z -m "..." && git push --tags` (tags carry the package prefix: `python-v` here, `r-v` for rgeopalette)
+7. If this release changes what the package produces, check that the
+   `parity` workflow is green on the commit you tag. It compares
+   [rgeopalette](../r) with `python/` of the same commit, so a conversion
+   that moved past its tolerance shows there and not in this package's tests.
 
 The order matters. A tag is what people install and what a DOI points at, so
 it should never be the thing that discovers a broken build. If Actions is

@@ -1,7 +1,7 @@
 # Contributing to rgeopalette
 
 rgeopalette converts RGB rasters into perceptual colour spaces. It is the R
-twin of [pygeopalette](https://github.com/igorpawelec/pygeopalette); the two are
+twin of [pygeopalette](../python) in the same repository; the two are
 developed together and are meant to agree.
 
 Bug reports, ideas and pull requests are all welcome.
@@ -73,17 +73,16 @@ Add a new space to both packages in the same change, or to neither. A
 conversion that exists on one side only is the failure this pair is built to
 avoid.
 
-## The pinned twin
+## The twin in the same commit
 
-The agreement job installs pygeopalette from a **tag**, not the tip of its main
-branch — see `.github/workflows/R-CMD-check.yaml`. Unpinned, a commit in
-pygeopalette could turn this repository's CI red without anything changing here,
-and the failure would read as a defect in this package.
+The agreement job installs pygeopalette from `python/` of the commit under
+test — see `.github/workflows/parity.yml`, which runs when either package
+changes. A commit that moves a conversion past its tolerance therefore fails
+in the push that makes it, on whichever side it was made.
 
-The cost is that the pin goes stale. When pygeopalette releases and the conversions
-changes, bump the tag in the workflow and re-run the agreement job. A stale
-pin proves agreement against an old pygeopalette, which is quieter than a red
-build and therefore worse.
+While the two packages lived in separate repositories the job installed
+pygeopalette from a pinned tag, and the pin could go stale without anyone
+noticing. There is no pin to bump any more.
 
 ## Pull requests
 
@@ -128,13 +127,13 @@ was meant to do. The matrix is the part that disagrees.
    This is the step that was missing. Either open the Actions tab, or:
 
    ```bash
-   curl -s "https://api.github.com/repos/igorpawelec/rgeopalette/actions/runs?per_page=1" | python -c "import json,sys; r=json.load(sys.stdin)['workflow_runs'][0]; print(r['head_sha'][:7], r['status'], r['conclusion'])"
+   curl -s "https://api.github.com/repos/igorpawelec/geopalette/actions/runs?per_page=1" | python -c "import json,sys; r=json.load(sys.stdin)['workflow_runs'][0]; print(r['head_sha'][:7], r['status'], r['conclusion'])"
    ```
 
    `gh run list` is nicer if the GitHub CLI is installed; it is not
    everywhere, and the curl form needs nothing but a public repo.
 7. Only then tag and push the tag:
-   `git tag -a vX.Y.Z -m "..." && git push --tags`
+   `git tag -a r-vX.Y.Z -m "..." && git push --tags` (tags carry the package prefix: `r-v` here, `python-v` for pygeopalette)
 
 The order matters. A tag is what people install and what a DOI points at, so
 it should never be the thing that discovers a broken build. If Actions is

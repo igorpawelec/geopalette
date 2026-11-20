@@ -4,7 +4,7 @@ title: "pygeopalette — Color space conversions for geospatial raster data"
 version: "0.7.1"
 date-released: "2026-08-30"
 license: GPL-3.0-or-later
-repository-code: "https://github.com/igorpawelec/pygeopalette"
+repository-code: "https://github.com/igorpawelec/geopalette"
 authors:
   - family-names: Pawelec
     given-names: Igor

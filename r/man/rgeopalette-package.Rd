@@ -11,8 +11,8 @@ Converts red-green-blue raster bands into fifteen colour spaces used in remote s
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/igorpawelec/rgeopalette}
-  \item Report bugs at \url{https://github.com/igorpawelec/rgeopalette/issues}
+  \item \url{https://github.com/igorpawelec/geopalette}
+  \item Report bugs at \url{https://github.com/igorpawelec/geopalette/issues}
 }
 
 }

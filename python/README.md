@@ -1,16 +1,16 @@
 # pygeopalette
 
-<img src="https://raw.githubusercontent.com/igorpawelec/pygeopalette/main/www/pygeopalette.png" align="right" width="200"/>
+<img src="https://raw.githubusercontent.com/igorpawelec/geopalette/main/python/www/pygeopalette.png" align="right" width="200"/>
 
-[![tests](https://github.com/igorpawelec/pygeopalette/actions/workflows/tests.yml/badge.svg)](https://github.com/igorpawelec/pygeopalette/actions/workflows/tests.yml)
-[![Release](https://img.shields.io/github/v/release/igorpawelec/pygeopalette)](https://github.com/igorpawelec/pygeopalette/releases)
+[![python-tests](https://github.com/igorpawelec/geopalette/actions/workflows/python-tests.yml/badge.svg)](https://github.com/igorpawelec/geopalette/actions/workflows/python-tests.yml)
+[![Release](https://img.shields.io/github/v/tag/igorpawelec/geopalette?filter=python-v*&label=release)](https://github.com/igorpawelec/geopalette/releases)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
 **Colour space conversions for geospatial raster data.**
 
 Three RGB bands go in; the components of any of 15 colour spaces come out, as arrays or as a GeoTIFF. Pure NumPy, vectorised over whole bands, no pixel loops, and `rasterio` only for the file I/O.
 
-> **R users:** the same conversions are in [rgeopalette](https://github.com/igorpawelec/rgeopalette). The two are separate repositories because their tooling and idioms do not mix. They agree to better than 1.7e-6 of each component's range — but, unlike the adaptels twins, they are **not bit-identical** and cannot be: pygeopalette stores single precision, R has no single-precision type.
+> **R users:** the same conversions are in [`r/`](../r), the rgeopalette package. The two packages share this repository and are compared with each other whenever either changes. They agree to better than 1.7e-6 of each component's range — but, unlike the adaptels twins, they are **not bit-identical** and cannot be: pygeopalette stores single precision, R has no single-precision type.
 
 ## The problem it solves
 
@@ -18,7 +18,7 @@ The three bands of an orthophoto are the camera's axes, not the analyst's. Red, 
 
 pygeopalette moves raster bands onto them. It implements the standard chain — sRGB linearisation (IEC 61966-2-1), CIE XYZ under D65, then CIELAB, CIELUV, their cylindrical LCH forms, DIN99, Oklab, Jzazbz, CIECAM02 and the video and hue-based spaces — with the numerical care a scientific application needs, and checks every space against an independent implementation.
 
-<img src="https://raw.githubusercontent.com/igorpawelec/pygeopalette/main/www/spaces.png" alt="A 30 by 30 m window of a spruce plot orthophoto in RGB and in seven colour spaces, each space's three components shown as the red, green and blue channels" width="100%"/>
+<img src="https://raw.githubusercontent.com/igorpawelec/geopalette/main/python/www/spaces.png" alt="A 30 by 30 m window of a spruce plot orthophoto in RGB and in seven colour spaces, each space's three components shown as the red, green and blue channels" width="100%"/>
 
 *A 30 × 30 m window of a 0.25 m orthophoto of a spruce stand (`test_data/SNP_21_2020_1.tif`) in RGB and in seven of the fifteen spaces, each space's three components shown as the red, green and blue channels and stretched for display. In the opponent spaces — CIELAB, Oklab, CIELUV, Jzazbz — the dead crowns turn magenta, because their `a*` is positive and the living canopy's is negative; the hue-based spaces wrap around the colour circle wherever a pixel is nearly neutral, which is the caveat below made visible. Made by `www/figures.py`.*
 
@@ -26,7 +26,7 @@ pygeopalette moves raster bands onto them. It implements the standard chain — 
 
 The plot has 36 standing dead trees digitised as points. Take every pixel within 1 m of a point as dead and every pixel further than 2 m from all of them as living — 1,759 against 118,627 — and ask of each axis how well it tells the two apart, as the probability that a random dead pixel outranks a random living one (an AUC: 0.5 is chance, 1 is perfect). Fifty-one axes: the three RGB bands and all 48 components of the fifteen spaces.
 
-<img src="https://raw.githubusercontent.com/igorpawelec/pygeopalette/main/www/separation.png" alt="CIELAB a* over the plot with the dead-tree points, the dead trees red on a blue canopy; the densities of dead and living pixels along a*, AUC 0.97; and along the blue band, the best RGB band, AUC 0.93" width="100%"/>
+<img src="https://raw.githubusercontent.com/igorpawelec/geopalette/main/python/www/separation.png" alt="CIELAB a* over the plot with the dead-tree points, the dead trees red on a blue canopy; the densities of dead and living pixels along a*, AUC 0.97; and along the blue band, the best RGB band, AUC 0.93" width="100%"/>
 
 *Left: CIELAB `a*` over the plot, red for positive, blue for negative, with the 36 points. Middle: dead and living pixels along `a*` — AUC 0.97, the best of the 51 axes (Oklab `a` and DIN99 `a` tie with it to three decimals). Right: the same along the blue band, the best that RGB can do — AUC 0.93, with the dead trees spread across the whole upper half of the living distribution. The hue axes score 0.94 but are undefined on neutral pixels; the green–red opponent axis is the one that carries the difference, which is why the dead-tree recipe in pygeoadaptels' `grow_seeds` weights `a*` by 2.5.*
 
@@ -44,7 +44,7 @@ pygeopalette is the first step of a longer chain; the other steps are separate p
 
 | Step | Python | R |
 |---|---|---|
-| Colour-space conversion of orthophotos | **pygeopalette** | [rgeopalette](https://github.com/igorpawelec/rgeopalette) |
+| Colour-space conversion of orthophotos | **pygeopalette** | [rgeopalette](../r) |
 | Adaptive superpixels and seeded growing on orthophotos | [pygeoadaptels](https://github.com/igorpawelec/pygeoadaptels) | [rgeoadaptels](https://github.com/igorpawelec/rgeoadaptels) |
 | Crowns from a canopy height model | [pycacumen](https://github.com/igorpawelec/pycacumen) | [rcacumen](https://github.com/igorpawelec/rcacumen) |
 | Standing dead trees on orthophotos | [pygeosnag](https://github.com/igorpawelec/pygeosnag) | — |
@@ -55,7 +55,7 @@ pygeopalette is the first step of a longer chain; the other steps are separate p
 
 ```bash
 conda install -c conda-forge numpy rasterio
-pip install --no-deps git+https://github.com/igorpawelec/pygeopalette.git
+pip install --no-deps "git+https://github.com/igorpawelec/geopalette.git#subdirectory=python"
 ```
 
 Rasterio is only needed for GeoTIFF I/O; every conversion works on plain NumPy arrays, so `pip install numpy` and the package is the minimal install. The `--no-deps` flag keeps pip from overwriting conda's GDAL/PROJ stack.
@@ -178,7 +178,7 @@ If you use this software in your research, please cite:
 
 1. **This implementation:**
 
-   > Pawelec, I. (2026). pygeopalette — Color space conversions for geospatial raster data [Software]. https://github.com/igorpawelec/pygeopalette
+   > Pawelec, I. (2026). pygeopalette — Color space conversions for geospatial raster data [Software]. https://github.com/igorpawelec/geopalette
 
 2. **For CIELAB/CIELUV conversions:**
 

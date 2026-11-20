@@ -1,9 +1,9 @@
 # rgeopalette
 
-<img src="https://raw.githubusercontent.com/igorpawelec/rgeopalette/main/www/rgeopalette.png" alt="rgeopalette logo" align="right" width="200"/>
+<img src="https://raw.githubusercontent.com/igorpawelec/geopalette/main/r/www/rgeopalette.png" alt="rgeopalette logo" align="right" width="200"/>
 
-[![R-CMD-check](https://github.com/igorpawelec/rgeopalette/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/igorpawelec/rgeopalette/actions/workflows/R-CMD-check.yaml)
-[![Release](https://img.shields.io/github/v/release/igorpawelec/rgeopalette)](https://github.com/igorpawelec/rgeopalette/releases)
+[![R-CMD-check](https://github.com/igorpawelec/geopalette/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/igorpawelec/geopalette/actions/workflows/R-CMD-check.yaml)
+[![Release](https://img.shields.io/github/v/tag/igorpawelec/geopalette?filter=r-v*&label=release)](https://github.com/igorpawelec/geopalette/releases)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![R](https://img.shields.io/badge/R-%3E%3D%203.6-blue.svg)](https://www.r-project.org)
 
@@ -11,7 +11,7 @@
 
 Three RGB bands go in as matrices; the components of any of 15 colour spaces come out, as a named list or as a raster. Plain R — no compiled code, no Rcpp, no required dependencies, and `terra` only if you want to read and write files.
 
-> **Python users:** the same conversions are in [pygeopalette](https://github.com/igorpawelec/pygeopalette). The two are separate repositories because their tooling and idioms do not mix. They are close, but — unlike the adaptels twins — they are **not identical**, and cannot be. See [Agreement with pygeopalette](#agreement-with-pygeopalette).
+> **Python users:** the same conversions are in [`python/`](../python), the pygeopalette package. The two packages share this repository. They are close, but — unlike the adaptels twins — they are **not identical**, and cannot be. See [Agreement with pygeopalette](#agreement-with-pygeopalette).
 
 ## The problem it solves
 
@@ -19,7 +19,7 @@ The three bands of an orthophoto are the camera's axes, not the analyst's. Red, 
 
 rgeopalette moves raster bands onto them. It implements the standard chain — sRGB linearisation (IEC 61966-2-1), CIE XYZ under D65, then CIELAB, CIELUV, their cylindrical LCH forms, DIN99, Oklab, Jzazbz, CIECAM02 and the video and hue-based spaces — vectorised over whole bands, which is why it needs no C, and checked against pygeopalette and against `farver`.
 
-<img src="https://raw.githubusercontent.com/igorpawelec/rgeopalette/main/www/spaces.png" alt="A 30 by 30 m window of a spruce plot orthophoto in RGB and in seven colour spaces, each space's three components shown as the red, green and blue channels" width="100%"/>
+<img src="https://raw.githubusercontent.com/igorpawelec/geopalette/main/r/www/spaces.png" alt="A 30 by 30 m window of a spruce plot orthophoto in RGB and in seven colour spaces, each space's three components shown as the red, green and blue channels" width="100%"/>
 
 *A 30 × 30 m window of a 0.25 m orthophoto of a spruce stand (`test_data/SNP_21_2020_1.tif`) in RGB and in seven of the fifteen spaces, each space's three components shown as the red, green and blue channels and stretched for display. In the opponent spaces — CIELAB, Oklab, CIELUV, Jzazbz — the dead crowns turn magenta, because their `a*` is positive and the living canopy's is negative; the hue-based spaces wrap around the colour circle wherever a pixel is nearly neutral, which is the caveat below made visible. Made by `www/figures.R`, from this package.*
 
@@ -27,7 +27,7 @@ rgeopalette moves raster bands onto them. It implements the standard chain — s
 
 The plot has 36 standing dead trees digitised as points. Take every pixel within 1 m of a point as dead and every pixel further than 2 m from all of them as living — 1,759 against 118,627 — and ask of each axis how well it tells the two apart, as the probability that a random dead pixel outranks a random living one (an AUC: 0.5 is chance, 1 is perfect). Fifty-one axes: the three RGB bands and all 48 components of the fifteen spaces.
 
-<img src="https://raw.githubusercontent.com/igorpawelec/rgeopalette/main/www/separation.png" alt="CIELAB a* over the plot with the dead-tree points, the dead trees red on a blue canopy; the densities of dead and living pixels along a*, AUC 0.97; and along the blue band, the best RGB band, AUC 0.93" width="100%"/>
+<img src="https://raw.githubusercontent.com/igorpawelec/geopalette/main/r/www/separation.png" alt="CIELAB a* over the plot with the dead-tree points, the dead trees red on a blue canopy; the densities of dead and living pixels along a*, AUC 0.97; and along the blue band, the best RGB band, AUC 0.93" width="100%"/>
 
 *Left: CIELAB `a*` over the plot, red for positive, blue for negative, with the 36 points. Middle: dead and living pixels along `a*` — AUC 0.97, the best of the 51 axes (Oklab `a` and DIN99 `a` tie with it to three decimals). Right: the same along the blue band, the best that RGB can do — AUC 0.93, with the dead trees spread across the whole upper half of the living distribution. The hue axes score 0.94 but are undefined on neutral pixels; the green–red opponent axis is the one that carries the difference, which is why the dead-tree recipe in rgeoadaptels' `grow_seeds` weights `a*` by 2.5. Every number here is the same as in pygeopalette's README: an AUC is a rank statistic, and the precision gap between the twins cannot move a rank.*
 
@@ -45,7 +45,7 @@ rgeopalette is the first step of a longer chain; the other steps are separate pa
 
 | Step | R | Python |
 |---|---|---|
-| Colour-space conversion of orthophotos | **rgeopalette** | [pygeopalette](https://github.com/igorpawelec/pygeopalette) |
+| Colour-space conversion of orthophotos | **rgeopalette** | [pygeopalette](../python) |
 | Adaptive superpixels and seeded growing on orthophotos | [rgeoadaptels](https://github.com/igorpawelec/rgeoadaptels) | [pygeoadaptels](https://github.com/igorpawelec/pygeoadaptels) |
 | Crowns from a canopy height model | [rcacumen](https://github.com/igorpawelec/rcacumen) | [pycacumen](https://github.com/igorpawelec/pycacumen) |
 | Standing dead trees on orthophotos | — | [pygeosnag](https://github.com/igorpawelec/pygeosnag) |
@@ -56,7 +56,7 @@ rgeopalette is the first step of a longer chain; the other steps are separate pa
 
 ```r
 # install.packages("remotes")
-remotes::install_github("igorpawelec/rgeopalette")
+remotes::install_github("igorpawelec/geopalette", subdir = "r")
 ```
 
 ## Use
@@ -115,6 +115,7 @@ Not bit-for-bit, and this is stated rather than glossed over. pygeopalette store
 Measured across 1600 pixels — including black, white, greys, near-greys and all six primaries and secondaries — every one of the 60 components of the 15 forward spaces and 4 inverses agrees to better than **1.7e-6 of the component's own range**. Reproduce it:
 
 ```sh
+pip install ../python          # pygeopalette from this checkout
 python3 tools/generate_pygeopalette_reference.py
 Rscript tools/cross_validate_against_pygeopalette.R
 ```
@@ -141,7 +142,7 @@ It touches only pixels with essentially zero chroma — 5 of 1600 in the run abo
 
 ## Citation
 
-Pawelec, I. (2026). *rgeopalette: Colour Space Conversions for Geospatial Raster Data*. R package version 0.2.0. https://github.com/igorpawelec/rgeopalette
+Pawelec, I. (2026). *rgeopalette: Colour Space Conversions for Geospatial Raster Data*. R package version 0.2.0. https://github.com/igorpawelec/geopalette
 
 Machine-readable metadata, including the papers the colour appearance models come from, is in [`CITATION.cff`](CITATION.cff).
 
