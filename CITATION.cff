@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite the package you used. Each carries
+  its own citation metadata with its version: python/CITATION.cff for
+  pygeopalette and r/CITATION.cff for rgeopalette. This file names the
+  repository as a whole.
+title: "geopalette: colour space conversions for geospatial raster data, in Python and R"
+type: software
+license: GPL-3.0-or-later
+repository-code: "https://github.com/igorpawelec/geopalette"
+authors:
+  - family-names: Pawelec
+    given-names: Igor
+    affiliation: "University of Agriculture in Kraków, Poland"
+    email: igor.pawelec@urk.edu.pl
+    orcid: "https://orcid.org/0009-0005-9798-3596"
+keywords:
+  - color space
+  - color conversion
+  - CIELAB
+  - Oklab
+  - raster
+  - geospatial
+  - remote sensing
