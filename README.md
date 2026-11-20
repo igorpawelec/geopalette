@@ -1,6 +1,6 @@
-# geopalette
+<img src="logo/geopalette-mark.svg" align="right" width="110" alt="geopalette mark: three stacked raster bands in three colours"/>
 
-<img src="python/www/pygeopalette.png" alt="geopalette logo" align="right" width="200"/>
+# geopalette
 
 [![python-tests](https://github.com/igorpawelec/geopalette/actions/workflows/python-tests.yml/badge.svg)](https://github.com/igorpawelec/geopalette/actions/workflows/python-tests.yml)
 [![R-CMD-check](https://github.com/igorpawelec/geopalette/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/igorpawelec/geopalette/actions/workflows/R-CMD-check.yaml)
@@ -17,6 +17,8 @@ Three RGB bands go in; the components of any of 15 colour spaces come out, as ar
 | R | [`rgeopalette`](r/) | ![latest r tag](https://img.shields.io/github/v/tag/igorpawelec/geopalette?filter=r-v*&label=) | `remotes::install_github("igorpawelec/geopalette", subdir = "r")` |
 
 The two are compared with each other whenever either changes ([parity workflow](.github/workflows/parity.yml)). They agree to better than 1.7e-6 of each component's range. They are not bit-identical and cannot be: pygeopalette stores single precision, and R has no single-precision type.
+
+**Authors:** Igor Pawelec, University of Agriculture in Kraków. **License:** GPL-3.0.
 
 ## The problem it solves
 
