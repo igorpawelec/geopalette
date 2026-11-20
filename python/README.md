@@ -1,6 +1,6 @@
 # pygeopalette
 
-<img src="https://raw.githubusercontent.com/igorpawelec/geopalette/main/python/www/pygeopalette.png" align="right" width="200"/>
+<img src="../logo/geopalette-mark.svg" alt="geopalette mark: three stacked raster bands in three colours" align="right" width="110"/>
 
 [![python-tests](https://github.com/igorpawelec/geopalette/actions/workflows/python-tests.yml/badge.svg)](https://github.com/igorpawelec/geopalette/actions/workflows/python-tests.yml)
 [![Release](https://img.shields.io/github/v/tag/igorpawelec/geopalette?filter=python-v*&label=release)](https://github.com/igorpawelec/geopalette/releases)
