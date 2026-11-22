@@ -1,6 +1,6 @@
 # rgeopalette
 
-<img src="../logo/geopalette-mark.svg" alt="geopalette mark: three stacked raster bands in three colours" align="right" width="110"/>
+<img src="https://raw.githubusercontent.com/igorpawelec/geopalette/main/logo/geopalette.svg" alt="geopalette: three stacked raster bands in three colours" align="right" height="64"/>
 
 [![R-CMD-check](https://github.com/igorpawelec/geopalette/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/igorpawelec/geopalette/actions/workflows/R-CMD-check.yaml)
 [![Release](https://img.shields.io/github/v/tag/igorpawelec/geopalette?filter=r-v*&label=release)](https://github.com/igorpawelec/geopalette/releases)

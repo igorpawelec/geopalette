@@ -1,6 +1,4 @@
-<img src="logo/geopalette-mark.svg" align="right" width="110" alt="geopalette mark: three stacked raster bands in three colours"/>
-
-# geopalette
+<h1><img src="logo/geopalette.svg" alt="geopalette" height="96"/></h1>
 
 [![python-tests](https://github.com/igorpawelec/geopalette/actions/workflows/python-tests.yml/badge.svg)](https://github.com/igorpawelec/geopalette/actions/workflows/python-tests.yml)
 [![R-CMD-check](https://github.com/igorpawelec/geopalette/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/igorpawelec/geopalette/actions/workflows/R-CMD-check.yaml)
