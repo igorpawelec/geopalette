@@ -1,6 +1,3 @@
-# rgeopalette 0.1.0
-
-
 # rgeopalette 0.2.0
 
 ## Changed
@@ -9,6 +6,8 @@
   breaking change for `library()` calls and for any dependency on it. The
   algorithms and the results are unchanged.
 
+
+# rgeopalette 0.1.0
 
 First release. The R twin of the pygeopalette Python package.
 
