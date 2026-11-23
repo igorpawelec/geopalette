@@ -323,7 +323,8 @@ def rgb_to_jch(R, G, B):
     **Not CIECAM02.** This is a cheap stand-in built from relative luminance
     and HSV-style chroma and hue, with no chromatic adaptation, surround or
     background term. Against a real CIECAM02 transform it tracks J at
-    r≈0.98 and C at r≈0.89, but the hue can be off by as much as 70°.
+    r≈0.98 and C at r≈0.89, but the hue can be off by as much as 71° on a
+    colour that is not nearly grey (``examples/readme_numbers.py``).
 
     Reach for it when you want a fast lightness/chroma/hue decomposition and
     the exact values do not matter. If you need CIECAM02 proper — for a

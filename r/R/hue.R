@@ -130,7 +130,8 @@ rgb_to_hsi <- function(R, G, B) {
 #' Built from relative luminance plus HSV-style chroma and hue, with no
 #' chromatic adaptation, surround or background term. Against a real
 #' CIECAM02 transform it tracks J at about r = 0.98 and C at about
-#' r = 0.89, but the hue can be off by as much as 70 degrees.
+#' r = 0.89, but the hue can be off by as much as 71 degrees on a colour that
+#' is not nearly grey.
 #'
 #' Note the hue range. `H` is an HSV hue scaled by 0.9, so it spans 0-324
 #' degrees — neither the 0-360 of a hue angle nor the 0-400 of CIECAM02 hue
