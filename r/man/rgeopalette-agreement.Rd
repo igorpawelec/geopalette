@@ -27,11 +27,12 @@ implementations such as `colour-science`.
 \section{Measured agreement}{
 
 Across 1600 pixels, including black, white, greys, near-greys and all
-six primaries and secondaries, every one of the 60 components of the 15
-forward spaces and 4 inverse transforms agrees with pygeopalette 0.4.0 to
-better than **1.7e-6 of the component's own range**. In absolute terms:
+six primaries and secondaries, every one of the 48 components of the 15
+forward spaces agrees with pygeopalette to better than **1.7e-6 of the
+component's own range**, and the 12 components of the 4 inverse transforms
+to better than **7e-6**. In absolute terms:
 
-* Oklab, xyY, Jzazbz — 1e-7 or better
+* Oklab, xyY, Jzazbz — 2e-7 or better
 * CIELAB, CIELUV, DIN99, HSL, HSV, JCH, YCbCr, CIECAM02 — 1e-4 or better
 * hue angles — 6e-4 degrees or better, with the exception below
 * inverse transforms — 7e-6 or better, on the 0-1 output scale
@@ -50,9 +51,10 @@ pygeopalette reports 0, 90 or 141.34 depending on the pixel; this package
 reports 158.199. Both are artefacts, neither is meaningful, and the
 difference reaches 158 degrees.
 
-It affects only pixels with essentially zero chroma — in the run above,
-5 pixels out of 1600, all with chroma below 1.8e-5. Above a chroma of
-0.01 the largest hue difference is 4.4e-4 degrees.
+It affects only pixels with essentially zero chroma. The comparison
+leaves out the pixels whose chroma is below a thousandth of the largest
+in the run, 5 of the 1600, and on all the others the largest hue
+difference is 5.9e-4 degrees.
 
 The practical consequence: **do not segment or classify on a hue band
 without masking low-chroma pixels first.** Grey, white, black, deep

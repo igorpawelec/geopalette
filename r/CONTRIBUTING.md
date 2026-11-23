@@ -60,8 +60,10 @@ Rscript tools/cross_validate_against_pygeopalette.R
 ```
 
 The two cannot be bit-identical and are not meant to be: pygeopalette computes
-in float32, rgeopalette in float64. The agreed tolerance is **1.7e-6**, and
-`R/agreement.R` documents both it and the one real divergence — hue on a
+in float32, rgeopalette in float64. The tool fails above **1e-5** of a
+component's range; measured, the forward conversions stay below 1.7e-6 and
+the inverse ones below 7e-6. `R/agreement.R` documents both figures and the
+one real divergence — hue on a
 neutral colour, where the two disagree by construction rather than by
 rounding.
 

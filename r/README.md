@@ -112,7 +112,7 @@ There is no single convention, and it bites when bands are stacked:
 
 Not bit-for-bit, and this is stated rather than glossed over. pygeopalette stores its intermediates in single precision; R has no single-precision numeric type, so this package computes in double throughout. The two part company at about the seventh significant figure by construction.
 
-Measured across 1600 pixels — including black, white, greys, near-greys and all six primaries and secondaries — every one of the 60 components of the 15 forward spaces and 4 inverses agrees to better than **1.7e-6 of the component's own range**. Reproduce it:
+Measured across 1600 pixels — including black, white, greys, near-greys and all six primaries and secondaries — every one of the 48 components of the 15 forward spaces agrees to better than **1.7e-6 of the component's own range**, and the 12 components of the 4 inverses to better than **7e-6** (the largest is the red of `oklab_to_rgb()`, 6.2e-6). Reproduce it:
 
 ```sh
 pip install ../python          # pygeopalette from this checkout
@@ -127,7 +127,7 @@ The double-precision result is the *more* accurate of the two: CIELAB `L*` match
 
 `Hab`, `Huv`, `hz` and CIECAM02 `h` come from `atan2()` over an opponent pair that is exactly zero for a neutral pixel, so the angle is decided by floating-point noise. On pure greys pygeopalette reports 0, 90 or 141.34 depending on the pixel; this package reports 158.199. Both are artefacts, neither is meaningful, and the difference reaches 158 degrees.
 
-It touches only pixels with essentially zero chroma — 5 of 1600 in the run above, all with chroma below 1.8e-5. Above a chroma of 0.01 the largest hue difference is 4.4e-4 degrees.
+It touches only pixels with essentially zero chroma. The comparison leaves out the pixels whose chroma is below a thousandth of the largest in the run, 5 of the 1600, and on all the others the largest hue difference is 5.9e-4 degrees.
 
 **Do not segment or classify on a hue band without masking low-chroma pixels first.** Grey, white, black, deep shadow and still water are all neutral, so this is ordinary in real imagery, not a corner case. The hues from `rgb_to_hsl()`, `rgb_to_hsv()`, `rgb_to_hsi()` and `rgb_to_jch()` are unaffected: they come from a max-minus-min sextant and are forced to 0 for achromatic pixels in both packages.
 

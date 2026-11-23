@@ -117,8 +117,9 @@ cat(sprintf("components compared: %d\n", length(w)))
 # The bound is relative to each component's own range: the scales differ by
 # orders of magnitude between Jzazbz (range 0.22) and YCbCr (range 224), and
 # no single absolute tolerance serves both. 1e-5 is about six times the
-# largest value measured for the 0.1.0 release (1.7e-6) — room for platform
-# differences in pow() and exp(), but not for a real regression.
+# largest value measured for a forward conversion (1.7e-6) and 1.6 times the
+# largest for an inverse one (6.2e-6, the red of oklab_to_rgb) — room for
+# platform differences in pow() and exp(), but not for a real regression.
 TOL_REL <- 1e-5
 bad <- rw[rw > TOL_REL]
 if (length(bad)) {

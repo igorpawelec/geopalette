@@ -14,7 +14,7 @@ Three RGB bands go in; the components of any of 15 colour spaces come out, as ar
 | Python | [`pygeopalette`](python/) | ![latest python tag](https://img.shields.io/github/v/tag/igorpawelec/geopalette?filter=python-v*&label=) | `pip install --no-deps "git+https://github.com/igorpawelec/geopalette.git#subdirectory=python"` |
 | R | [`rgeopalette`](r/) | ![latest r tag](https://img.shields.io/github/v/tag/igorpawelec/geopalette?filter=r-v*&label=) | `remotes::install_github("igorpawelec/geopalette", subdir = "r")` |
 
-The two are compared with each other whenever either changes ([parity workflow](.github/workflows/parity.yml)). They agree to better than 1.7e-6 of each component's range. They are not bit-identical and cannot be: pygeopalette stores single precision, and R has no single-precision type.
+The two are compared with each other whenever either changes ([parity workflow](.github/workflows/parity.yml)). The forward conversions agree to better than 1.7e-6 of each component's range, the four inverse ones to better than 7e-6. They are not bit-identical and cannot be: pygeopalette stores single precision, and R has no single-precision type.
 
 **Authors:** Igor Pawelec, University of Agriculture in Kraków. **License:** GPL-3.0.
 

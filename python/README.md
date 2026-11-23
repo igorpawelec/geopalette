@@ -10,7 +10,7 @@
 
 Three RGB bands go in; the components of any of 15 colour spaces come out, as arrays or as a GeoTIFF. Pure NumPy, vectorised over whole bands, no pixel loops, and `rasterio` only for the file I/O.
 
-> **R users:** the same conversions are in [`r/`](../r), the rgeopalette package. The two packages share this repository and are compared with each other whenever either changes. They agree to better than 1.7e-6 of each component's range — but, unlike the adaptels twins, they are **not bit-identical** and cannot be: pygeopalette stores single precision, R has no single-precision type.
+> **R users:** the same conversions are in [`r/`](../r), the rgeopalette package. The two packages share this repository and are compared with each other whenever either changes. The forward conversions agree to better than 1.7e-6 of each component's range and the four inverse ones to better than 7e-6 — but, unlike the adaptels twins, they are **not bit-identical** and cannot be: pygeopalette stores single precision, R has no single-precision type.
 
 ## The problem it solves
 
