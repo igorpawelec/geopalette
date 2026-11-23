@@ -1,6 +1,28 @@
 # Changelog
 
 
+## [0.8.0] — 2026-11-23
+
+### Changed
+- **Single-band files carry the space in their name**: `<input>_<space>_<component>.tif`,
+  where they were `<input>_<component>.tif`. CIELAB and Oklab both have components `L`,
+  `a` and `b`, and the three hue spaces share `H` and `S`, so converting one raster into
+  one folder in two spaces overwrote files of the first conversion with those of the
+  second. A script that read `<input>_L.tif` now reads `<input>_lab_L.tif`. The
+  multi-band file keeps its name.
+
+### Added
+- **The bands are named.** Every band of the multi-band file and of the single-band
+  files carries the name of its component as its description (`L`, `a`, `b`), so a GIS
+  lists the components rather than "Band 1" to "Band 3". rgeopalette has always
+  written them.
+
+### Fixed
+- `examples/convert_geotiff.py` read a file that is not in the repository. It runs on
+  the orthophoto in `test_data/` from any folder, and saves its picture instead of
+  opening a window.
+
+
 ## [0.7.1] — 2026-08-30
 
 ### Fixed
