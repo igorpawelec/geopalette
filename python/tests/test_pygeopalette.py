@@ -417,3 +417,41 @@ class TestBlockSize:
         for n in names:
             with rasterio.open(a / n) as f1, rasterio.open(b / n) as f2:
                 assert np.array_equal(f1.read(), f2.read(), equal_nan=True), n
+
+    def test_bands_carry_the_names_of_their_components(self, tmp_path):
+        """Until 0.8.0 the bands had no description, so a GIS listed them as
+        Band 1 to Band 3; the R twin has always written L, a, b."""
+        rasterio = pytest.importorskip("rasterio")
+        from pygeopalette import convertbands
+        from pygeopalette.io_utils import convert_raster
+        src = self._scene(tmp_path)
+        out = tmp_path / "named"; out.mkdir()
+        for space in ("lab", "lchab", "hsv"):
+            _, expected = convertbands(*(np.zeros((1, 1), np.uint8),) * 3, space)
+            multi = convert_raster(src, out, space, save_singlebands=True, quiet=True)
+            with rasterio.open(multi) as f:
+                assert f.descriptions == tuple(expected), (space, f.descriptions)
+            for n in expected:
+                with rasterio.open(out / f"{src.stem}_{space}_{n}.tif") as f:
+                    assert f.descriptions == (n,), (space, n, f.descriptions)
+
+    def test_single_bands_of_two_spaces_share_a_folder(self, tmp_path):
+        """CIELAB and Oklab both have components L, a and b. Named after the
+        component alone, their single-band files were the same three files and
+        the second conversion overwrote the first."""
+        rasterio = pytest.importorskip("rasterio")
+        from pygeopalette.io_utils import convert_raster
+        src = self._scene(tmp_path)
+        out = tmp_path / "two"; out.mkdir()
+        for space in ("lab", "oklab"):
+            convert_raster(src, out, space, save_multiband=False,
+                           save_singlebands=True, quiet=True)
+        names = sorted(p.name for p in out.glob("*.tif"))
+        assert names == sorted(f"{src.stem}_{s}_{c}.tif"
+                               for s in ("lab", "oklab") for c in ("L", "a", "b")), names
+        with rasterio.open(out / f"{src.stem}_lab_L.tif") as f1, \
+                rasterio.open(out / f"{src.stem}_oklab_L.tif") as f2:
+            a, b = f1.read(1), f2.read(1)
+            valid = (a != f1.nodata) & (b != f2.nodata)
+            # CIELAB's L runs to 100, Oklab's to 1: they cannot be the same file
+            assert valid.any() and not np.allclose(a[valid], b[valid])

@@ -87,6 +87,8 @@ from pygeopalette.io_utils import convert_raster
 convert_raster("ortho_rgb.tif", "results/", "lab", save_multiband=True, save_singlebands=True)
 ```
 
+The multi-band file is `<input>_<space>.tif`; `save_singlebands` adds one file per component, `<input>_<space>_<component>.tif`. Every band carries the name of its component (`L`, `a`, `b`), as the files rgeopalette writes do.
+
 ```bash
 pygeopalette -i ortho_rgb.tif -o results/ -s lab
 pygeopalette -i ortho_rgb.tif -o results/ -s oklab --single-bands

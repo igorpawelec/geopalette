@@ -50,7 +50,8 @@ def convert_raster(
     save_multiband : bool
         Write a single multi-band TIFF (default ``True``).
     save_singlebands : bool
-        Write each component as a separate single-band TIFF.
+        Write each component as a separate single-band TIFF,
+        ``<input>_<space>_<component>.tif``.
     nodata : float
         NoData value for output rasters.
     block_size : int
@@ -68,8 +69,9 @@ def convert_raster(
     -------
     Path
         The multi-band output when ``save_multiband`` is set, otherwise the
-        output directory (single-band files are named after their
-        components, so there is no single path to return).
+        output directory (single-band files are named
+        ``<input>_<space>_<component>.tif``, so there is no single path to
+        return). Every band carries its component's name as its description.
 
     Raises
     ------
@@ -139,11 +141,22 @@ def convert_raster(
             dst_multi = (stack.enter_context(
                 rasterio.open(multi_path, "w", **meta_out))
                 if save_multiband else None)
-            dst_single = [
-                stack.enter_context(
-                    rasterio.open(output_dir / f"{base}_{n}.tif", "w", **meta_s))
-                for n in names
-            ] if save_singlebands else []
+            # The components are named in the file, as the R twin names them:
+            # a GIS then lists "L", "a", "b" rather than "Band 1" to "Band 3",
+            # and the outputs of the two packages line up band by band.
+            if dst_multi is not None:
+                dst_multi.descriptions = tuple(names)
+            # The space is part of a single-band file's name. Named after the
+            # component alone, the L of CIELAB and the L of Oklab were the
+            # same file, and so were the H and S of the three hue spaces: the
+            # second conversion into a folder overwrote part of the first.
+            dst_single = []
+            if save_singlebands:
+                for n in names:
+                    dst = stack.enter_context(rasterio.open(
+                        output_dir / f"{base}_{space}_{n}.tif", "w", **meta_s))
+                    dst.set_band_description(1, n)
+                    dst_single.append(dst)
 
             for win in windows:
                 R = src.read(1, window=win)
