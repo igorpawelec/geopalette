@@ -1,76 +1,75 @@
 """
-pygeopalette_test.py
+convert_geotiff.py
 ~~~~~~~~~~~~~~~~~~
-Example usage: convert an RGB GeoTIFF to CIELAB and display results.
+Convert the orthophoto in ``test_data/`` to a colour space, write the result as
+a GeoTIFF and save a side-by-side picture of the input and the output.
 
-Usage::
+Usage, from anywhere::
 
-    python pygeopalette_test.py
+    python examples/convert_geotiff.py [space]
+
+``space`` is one of ``pygeopalette.available_spaces()``; the default is ``lab``.
+The outputs go to ``results/<space>/`` in the package folder. The package is
+read from the checkout this script sits in and need not be installed; numpy,
+rasterio and matplotlib do.
 """
 
 import os
+import sys
+
 import numpy as np
 
-# ── Config ──────────────────────────────────────────────────────────────
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+INPUT = os.path.join(ROOT, "test_data", "SNP_21_2020_1.tif")
+BASE_OUT = os.path.join(ROOT, "results")
+sys.path.insert(0, ROOT)          # the checkout, not an older installed copy
 
-INPUT = r"test_data/sample_rgb.tif"
-BASE_OUT = r"results"
-SPACE = "lab"
 
-# ── Run ─────────────────────────────────────────────────────────────────
-
-def main():
-    import rasterio
+def main(space="lab"):
+    import matplotlib
+    matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    from pygeopalette import convertbands, available_spaces
+    import rasterio
+    from pygeopalette import available_spaces, convertbands
+    from pygeopalette.io_utils import convert_raster
 
     print(f"Available spaces: {available_spaces()}")
 
-    os.makedirs(BASE_OUT, exist_ok=True)
-    out_dir = os.path.join(BASE_OUT, SPACE)
-    os.makedirs(out_dir, exist_ok=True)
-    base = os.path.splitext(os.path.basename(INPUT))[0]
+    out_dir = os.path.join(BASE_OUT, space)
 
-    # Read raster
+    # The file: every band named after its component, no-data kept as no-data.
+    multi_path = convert_raster(INPUT, out_dir, space)
+
+    # The same conversion on arrays, for the picture.
     with rasterio.open(INPUT) as src:
-        meta = src.meta.copy()
         R, G, B = src.read(1), src.read(2), src.read(3)
+        valid = src.dataset_mask() != 0
+    comps, names = convertbands(R, G, B, space)
+    print(f"Converted to {space}: components = {names}")
 
-    # Convert
-    comps, names = convertbands(R, G, B, SPACE)
-    print(f"Converted to {SPACE}: components = {names}")
+    def stretch(ch):
+        lo, hi = np.percentile(ch[valid], (2, 98))
+        return np.clip((ch - lo) / (hi - lo + 1e-8), 0, 1)
 
-    # Save multi-band
-    multi_path = os.path.join(out_dir, f"{base}_{SPACE}.tif")
-    meta3 = meta.copy()
-    meta3.update(count=len(comps), dtype="float32")
-    with rasterio.open(multi_path, "w", **meta3) as dst:
-        dst.write(np.stack(comps).astype(np.float32))
-    print(f"Saved: {multi_path}")
-
-    # Plot
     orig = np.dstack((R, G, B)) / 255.0
-    raw = np.dstack(comps[:3])
-    conv = np.stack(
-        [
-            (lambda ch: (ch - ch.min()) / (ch.max() - ch.min() + 1e-8))(
-                raw[..., i]
-            )
-            for i in range(min(3, len(comps)))
-        ],
-        axis=-1,
-    )
+    conv = np.dstack([stretch(np.asarray(c, dtype="float64")) for c in comps[:3]])
+    conv[~valid] = 1.0
+    orig[~valid] = 1.0
 
     fig, ax = plt.subplots(1, 2, figsize=(12, 6))
     ax[0].imshow(orig)
     ax[0].set_title("RGB")
     ax[0].axis("off")
     ax[1].imshow(conv)
-    ax[1].set_title(SPACE.upper())
+    ax[1].set_title(f"{space}: {', '.join(names[:3])} as red, green, blue")
     ax[1].axis("off")
     plt.tight_layout()
-    plt.show()
+    picture = os.path.join(out_dir, f"{os.path.splitext(os.path.basename(INPUT))[0]}_{space}.png")
+    fig.savefig(picture, dpi=120)
+    print(f"Saved: {multi_path}")
+    print(f"Saved: {picture}")
 
 
 if __name__ == "__main__":
-    main()
+    main(*sys.argv[1:2])
