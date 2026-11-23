@@ -33,8 +33,9 @@ spaces <- utils::read.csv(file.path(dir, "spaces.csv"), header = FALSE,
 
 # Hue angles derived with atan2 are undefined on the neutral axis, where
 # the opponent pair is 0 and only float noise decides the angle. Comparing
-# them there measures nothing: on a pure grey pygeopalette reports 0, 90 or
-# 141.34 depending on the pixel, and this package reports 158.199. Both are
+# them there measures nothing: on a pure grey pygeopalette reports 0, 90,
+# 141.34 or 158.199 depending on the pixel, and this package 0 for black and
+# 158.199 for every other grey. Both are
 # artefacts. So each such hue is compared only where its own chroma is
 # meaningful, and the skipped pixels are counted rather than hidden.
 #

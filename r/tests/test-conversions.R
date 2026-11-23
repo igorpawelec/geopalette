@@ -185,4 +185,11 @@ err(rgb_to_cam02(R, G, B, whitepoint = c(1, 2)), "a short whitepoint is rejected
 err(convertbands(R, G, B, "lab", surround = "dark"),
     "extra arguments to a space that takes none are rejected")
 
+# The README quotes these two values: on the neutral axis the hue angle is
+# decided by floating-point noise, and this is what the noise decides here.
+g <- c(0, 255, 128, 1, 254)
+hab <- rgb_to_lchab(g, g, g)$Hab
+ok(hab[1] == 0 && all(abs(hab[-1] - 158.199) < 1e-3),
+   "Hab of a pure grey is 0 for black and 158.199 for the others")
+
 cat("\nall conversion tests passed\n")

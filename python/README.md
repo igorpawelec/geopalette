@@ -123,7 +123,7 @@ Inverse conversions: **CIELAB → RGB**, **Oklab → RGB**, **HSV → RGB**, **H
 
 - **Scales differ between spaces.** Hue is 0–360, HSL/HSV saturation and value 0–1, HSI saturation 0–100 per cent and intensity 0–255, `L*` 0–100 with `a*`/`b*` unbounded, `jch` hue 0–324 (an HSV hue scaled by 0.9), `ycbcr` studio swing with Y 16–235. Normalise before you stack.
 - **Hue is undefined on the neutral axis.** `Hab`, `Huv`, `hz` and CIECAM02 `h` come from `atan2` over an opponent pair that is zero for a neutral pixel, so the angle is floating-point noise there — grey, white, black, deep shadow and still water are all neutral, which is ordinary in imagery. Do not segment or classify on a hue band without masking low-chroma pixels first. The HSL/HSV/HSI/JCH hues are forced to 0 for achromatic pixels instead.
-- **`cam02` is real CIECAM02; `jch` is not.** `rgb_to_cam02` runs the full model — CAT02 adaptation, surround, background — and takes viewing conditions because CIECAM02 models an observer: `L_A` the adapting luminance (~318 for a sunlit scene, ~64 for a screen), `Y_b` the background (20 = grey world), `surround` one of `average` / `dim` / `dark`. They move the result — J shifts about 8 units between average and dark — so report them. `jch` has none of that: it tracks CIECAM02 at r ≈ 0.98 on J and 0.89 on C, but its hue can be off by 70°.
+- **`cam02` is real CIECAM02; `jch` is not.** `rgb_to_cam02` runs the full model — CAT02 adaptation, surround, background — and takes viewing conditions because CIECAM02 models an observer: `L_A` the adapting luminance (~318 for a sunlit scene, ~64 for a screen), `Y_b` the background (20 = grey world), `surround` one of `average` / `dim` / `dark`. They move the result — J shifts about 8 units between average and dark — so report them. `jch` has none of that: it tracks CIECAM02 at r ≈ 0.98 on J and 0.89 on C, but its hue can be off by 71° on a pixel that is not nearly grey. These numbers are measured over all 16.7 million 8-bit sRGB colours by `examples/readme_numbers.py`.
 
 <details>
 <summary><b>Accuracy</b></summary>
@@ -135,7 +135,7 @@ pip install -e ".[validate]"
 pytest tests/test_reference.py -v
 ```
 
-All 15 spaces match their reference to float32 precision. Where a tolerance looks loose it is the module's own float32 storage: the PQ curve inside Jzazbz carries an exponent of 134, which turns a float32 input error of ~1e-7 into ~1e-5 on the output.
+All 15 spaces are checked against an independent implementation in `tests/test_reference.py`, each within the tolerance set there.
 
 `ycbcr` is BT.601 studio swing, not full range: black is Y = 16, white is Y = 235. Rescale with `(Y - 16) * 255 / 219` if you need 0–255.
 
@@ -152,6 +152,8 @@ pygeopalette/
 │   ├── conversions.py    # All conversion functions
 │   └── io_utils.py       # GeoTIFF read/write helpers
 ├── tests/                # Pytest suite, incl. the reference check
+├── examples/             # Scripts that run on test_data, incl. the numbers quoted above
+├── examples/             # Scripts that run on test_data, incl. the numbers quoted above
 ├── test_data/            # The sample plot and its dead-tree points
 ├── www/                  # Logo and the README figures, with the script that makes them
 ├── pyproject.toml

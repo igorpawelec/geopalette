@@ -38,9 +38,9 @@
 #' colour that has no hue. `Hab`, `Huv`, `hz` and CIECAM02 `h` are computed
 #' with `atan2()` over an opponent pair that is exactly 0 for a neutral
 #' pixel, so the angle is decided by floating-point noise. On pure greys
-#' pygeopalette reports 0, 90 or 141.34 depending on the pixel; this package
-#' reports 158.199. Both are artefacts, neither is meaningful, and the
-#' difference reaches 158 degrees.
+#' pygeopalette reports 0, 90, 141.34 or 158.199 depending on the pixel; this
+#' package reports 0 for black and 158.199 for every other grey. Both are
+#' artefacts, neither is meaningful, and the difference reaches 158 degrees.
 #'
 #' It affects only pixels with essentially zero chroma. The comparison
 #' leaves out the pixels whose chroma is below a thousandth of the largest

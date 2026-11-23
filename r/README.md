@@ -120,12 +120,12 @@ python3 tools/generate_pygeopalette_reference.py
 Rscript tools/cross_validate_against_pygeopalette.R
 ```
 
-The double-precision result is the *more* accurate of the two: CIELAB `L*` matches the independent `farver` implementation to 1.4e-14 here.
+The double-precision result is the *more* accurate of the two: CIELAB `L*` matches the independent `farver` implementation to 1.4e-14 (`tests/test-reference.R` prints the difference).
 
 <details>
 <summary><b>One genuine divergence: hue on the neutral axis</b></summary>
 
-`Hab`, `Huv`, `hz` and CIECAM02 `h` come from `atan2()` over an opponent pair that is exactly zero for a neutral pixel, so the angle is decided by floating-point noise. On pure greys pygeopalette reports 0, 90 or 141.34 depending on the pixel; this package reports 158.199. Both are artefacts, neither is meaningful, and the difference reaches 158 degrees.
+`Hab`, `Huv`, `hz` and CIECAM02 `h` come from `atan2()` over an opponent pair that is exactly zero for a neutral pixel, so the angle is decided by floating-point noise. On pure greys pygeopalette reports 0, 90, 141.34 or 158.199 depending on the pixel; this package reports 0 for black and 158.199 for every other grey. The pygeopalette values are printed by `python/examples/readme_numbers.py` in this repository, and `tests/test-conversions.R` holds this package to its own. Both are artefacts, neither is meaningful, and the difference reaches 158 degrees.
 
 It touches only pixels with essentially zero chroma. The comparison leaves out the pixels whose chroma is below a thousandth of the largest in the run, 5 of the 1600, and on all the others the largest hue difference is 5.9e-4 degrees.
 
