@@ -1,6 +1,6 @@
 # The README figures, generated from test_data so they can be remade.
 #
-#     Rscript www/figures.R           # from the repository root
+#     Rscript www/figures.R           # from the package folder, r/
 #
 # Writes two figures and prints the numbers the README captions quote:
 #   www/spaces.png       a 30 x 30 m window of the scene in RGB and in seven

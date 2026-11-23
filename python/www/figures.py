@@ -1,6 +1,9 @@
 """The README figures, generated from test_data so they can be remade.
 
-    python www/figures.py            # from the repository root; no install needed
+    python www/figures.py            # from the package folder, python/
+
+The package is read from the checkout and need not be installed; the script
+itself needs matplotlib, scipy, rasterio and fiona.
 
 Writes two figures and prints the numbers the README captions quote:
   www/spaces.png       a 30 x 30 m window of the scene in RGB and in seven

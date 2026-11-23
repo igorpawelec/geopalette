@@ -1,6 +1,6 @@
 """Write reference bands from pygeopalette for cross_validate_against_pygeopalette.R.
 
-    pip install pygeopalette
+    pip install ../python            # pygeopalette from this checkout
     python3 tools/generate_pygeopalette_reference.py
 
 Deliberately covers the awkward pixels as well as random ones: pure

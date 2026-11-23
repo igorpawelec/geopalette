@@ -170,7 +170,7 @@ pip install pytest
 pytest tests/ -v
 ```
 
-The README figures are remade with `python www/figures.py` from the files in `test_data/`.
+The README figures are remade with `python www/figures.py`, run from this folder, from the files in `test_data/`. The script needs matplotlib, scipy, rasterio and fiona; the package itself is read from the checkout.
 
 </details>
 

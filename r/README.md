@@ -136,7 +136,7 @@ It touches only pixels with essentially zero chroma. The comparison leaves out t
 <details>
 <summary><b>The figures</b></summary>
 
-`Rscript www/figures.R` from the repository root remakes the two figures from the files in `test_data/` — the orthophoto and the 36 dead-tree points — using the package in the checkout (`pkgload`) rather than an installed copy, and prints the AUC ranking the captions quote.
+`Rscript www/figures.R`, run from this folder, remakes the two figures from the files in `test_data/` — the orthophoto and the 36 dead-tree points — using the package in the checkout (`pkgload`) rather than an installed copy, and prints the AUC ranking the captions quote.
 
 </details>
 
